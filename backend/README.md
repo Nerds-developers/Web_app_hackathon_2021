@@ -1,6 +1,6 @@
 # Backend part of the web project
 
-## Install
+## Install for developing
 
 Install [poetry](https://python-poetry.org/docs/#installation)
 
