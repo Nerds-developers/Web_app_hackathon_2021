@@ -1,7 +1,6 @@
 import re
-from datetime import datetime
 
-from backend.providers import fetch
+from backend.providers import fetch, extract_price, clean_title
 from backend.core.typing import ProductItem
 
 query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
@@ -42,9 +41,8 @@ def parse_price_data(product_page_parsed):
 
 
 def get_float_prices(prices_table):
-    text_prices = [re.sub(r"(грн| )", "", price_text.text).strip() for price_text in
-                   prices_table.find_all("strong")]
-    prices = [float(re.sub(r",", ".", price)) for price in text_prices]
+    prices = [extract_price(price_text) for price_text in
+              prices_table.find_all("strong")]
     return prices
 
 
@@ -69,12 +67,6 @@ def get_producer(product_page_parsed):
     producer = product_page_parsed.find("div", class_="productDetail_tabs").find("table", class_="table").find("a").\
         text.lower()
     return producer
-
-
-def clean_title(title, producer):
-    title = re.sub(r"\b(\d+)(г|кг)\b", "", title.lower())
-    title = re.sub(producer, "", title).strip()
-    return title
 
 
 parse()
