@@ -48,8 +48,7 @@ def get_float_prices(prices_table):
 
 
 def get_int_volumes(prices_table):
-    text_volumes = [volume.text for volume in prices_table.find_all("td")
-                    if re.match(r"^.+шт.*$", volume.text) is not None]
+    text_volumes = [volume.text for volume in prices_table.find_all("td", text=re.compile(r"^.+шт.*$"))]
     volumes = [re.findall(r"\d+", text_volume)[0] for text_volume in text_volumes]
     return volumes
 
