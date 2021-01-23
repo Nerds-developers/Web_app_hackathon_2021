@@ -9,6 +9,8 @@ python = "^3.8.6"
 Flask = "^1.1.2"
 requests = "^2.25.1"
 beautifulsoup4 = "^4.9.3"
+lxml = "^4.6.2"
+pydantic = "^1.7.3"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.9.3"
