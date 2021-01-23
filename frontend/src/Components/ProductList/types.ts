@@ -1,10 +1,10 @@
-import { IProduct } from "../../Data/api-types";
+import { IProduct } from '../../Data/api-types'
 
 export interface IListProps {
-  data: IProduct[];
+	data: IProduct[]
 }
 
 export interface IListItemProps {
-  key: string;
-  data: IProduct;
+	key: string
+	data: IProduct
 }
