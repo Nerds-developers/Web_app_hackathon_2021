@@ -7,10 +7,11 @@ query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
 
 
 def parse():
+    results = list()
     search_result = fetch(query_uri)
     product_links = get_product_links(search_result)
-    result_items = [parse_product_items(prod_link) for prod_link in product_links]
-    return result_items
+    [results.extend(parse_product_items(prod_link)) for prod_link in product_links]
+    return results
 
 
 def get_product_links(search_result):
@@ -69,4 +70,5 @@ def get_producer(product_page_parsed):
     return producer
 
 
-parse()
+for i in parse():
+    print(i)
