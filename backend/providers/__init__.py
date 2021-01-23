@@ -3,7 +3,7 @@ from random import choice
 from requests import get
 import json
 
-user_agents_path = "/home/alex/PycharmProjects/Web_app_hackathon_2021/backend/parsers/user_agents.json"
+user_agents_path = "/backend/providers/user_agents.json"
 with open(user_agents_path) as af:
     user_agents = json.load(af)
 

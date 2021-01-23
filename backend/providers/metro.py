@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 
-from backend.parsers import fetch
+from backend.providers import fetch
 from backend.core.typing import ProductItem
 
 query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
