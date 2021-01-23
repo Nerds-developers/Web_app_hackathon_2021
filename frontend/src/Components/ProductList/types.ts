@@ -5,5 +5,6 @@ export interface IListProps {
 }
 
 export interface IListItemProps {
+  key: string;
   data: IProduct;
 }

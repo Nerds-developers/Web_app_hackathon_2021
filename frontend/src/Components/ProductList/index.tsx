@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   gridList: {
-    padding: 20
+    padding: 20,
   },
 });
 
@@ -17,8 +17,8 @@ const ProductList = ({ data }: IListProps) => {
   const styles = useStyles();
   return (
     <GridList className={styles.gridList}>
-      {data.map((tileData: IProduct) => (
-        <ListItem data={tileData} />
+      {data.map((tileData: IProduct, index: number) => (
+        <ListItem data={tileData} key={String(index)} />
       ))}
     </GridList>
   );

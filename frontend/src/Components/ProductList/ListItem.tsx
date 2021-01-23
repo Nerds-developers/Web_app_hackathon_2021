@@ -22,10 +22,10 @@ const useStyles = makeStyles({
   },
 });
 
-const ListItem = ({ data }: IListItemProps) => {
+const ListItem = ({ key, data }: IListItemProps) => {
   const styles = useStyles();
   return (
-    <GridListTile key={data.id} className={styles.tile}>
+    <GridListTile className={styles.tile} key={String(key)}>
       <img src={data.image} alt={data.name} className={styles.image} />
       <GridListTileBar
         title={data.name}

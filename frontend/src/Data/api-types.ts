@@ -1,4 +1,4 @@
-export type Shop = 'atb' | 'silpo' | 'metro'
+export type Shop = "atb" | "silpo" | "metro";
 
 export interface IProduct {
   id: number;
@@ -6,15 +6,15 @@ export interface IProduct {
   producer: string;
   price: number;
   image: string;
-  shop: Shop
-  link: string
+  shop: Shop;
+  link: string;
 }
 
 export interface IProducer {
-  label: string,
-  id: number
+  label: string;
+  id: number;
 }
 
 export type FilterConfigs = {
-  producers: IProducer[]
-}
+  producers: IProducer[];
+};

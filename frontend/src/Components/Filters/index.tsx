@@ -1,62 +1,123 @@
-import React from 'react';
-import {createStyles, Theme, withStyles, WithStyles} from '@material-ui/core/styles';
+import React from "react";
+import { createStyles, Theme } from "@material-ui/core/styles";
 
 import {
-    Box, Checkbox,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormLabel,
-    makeStyles,
-    Radio,
-    RadioGroup
+  Box,
+  Button,
+  Checkbox, Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  makeStyles,
+  TextField,
 } from "@material-ui/core";
-import {FilterConfigs} from "../../Data/api-types";
+import { FilterConfigs } from "../../Data/api-types";
+import { useFormik } from "formik";
+import Slider from "./Slider";
 
 const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-        },
-        formControl: {
-            margin: theme.spacing(3),
-        },
-    }),
+  createStyles({
+    root: {
+      display: "flex",
+    },
+    formControl: {
+      margin: theme.spacing(3),
+    },
+    buttonsGroup: {
+      marginTop: "35px",
+      flexDirection: "row",
+      "& button": {
+        margin: "10px",
+      },
+    },
+  })
 );
 
-
 export type FiltersProps = {
-    configs: FilterConfigs
-}
+  configs: FilterConfigs;
+};
+
+type FormValues = {
+  selectedProducers: string[];
+  price: { min: number; max: number };
+};
 
 const Filters = ({ configs: { producers } }: FiltersProps) => {
-    const classes = useStyles()
-    const [selectedProducers, setSelectedProducers] = React.useState<Record<string, boolean>>({});
+  const classes = useStyles();
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedProducers({
-                ...selectedProducers,
-                ...{ [event.target.name]: !selectedProducers[event.target.name] }
-        })
-    };
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    handleReset,
+    setFieldValue,
+  } = useFormik<FormValues>({
+    initialValues: {
+      selectedProducers: [],
+      price: { min: 10, max: 80 },
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
-    return (
-        <Box>
-            <FormControl component="fieldset" className={classes.formControl}>
-                <FormLabel component="legend">Виробники</FormLabel>
-                <FormGroup>
-                    {
-                        producers.map(({  label, id }) => (
-                            <FormControlLabel
-                                control={<Checkbox checked={selectedProducers[String(id)]} onChange={handleChange} name={String(id)} />}
-                                label={label}
-                            />
-                        ))
-                    }
-                </FormGroup>
-            </FormControl>
-        </Box>
-    )
-}
+  return (
+    <form onSubmit={handleSubmit} onReset={handleReset}>
+      <FormControl component="fieldset" className={classes.formControl}>
+        <FormLabel component="legend">Виробники: </FormLabel>
+        <FormGroup>
+          {producers.map(({ label, id }) => (
+            <FormControlLabel
+              key={String(id)}
+              control={
+                <Checkbox
+                  checked={values.selectedProducers.includes(String(id))}
+                  onChange={handleChange}
+                  name="selectedProducers"
+                  value={id}
+                />
+              }
+              label={label}
+            />
+          ))}
+        </FormGroup>
+        <Divider orientation="horizontal" />
+        <FormGroup>
+          <FormLabel component="legend">Ціна: </FormLabel>
+          <Slider
+            minValue={values.price.min}
+            maxValue={values.price.max}
+            handleChange={(min, max) => setFieldValue("price", { min, max })}
+          />
+          <TextField
+            id="standard-basic"
+            label="Мін:"
+            type="number"
+            name="price.min"
+            value={values.price.min}
+            onChange={handleChange}
+          />
+          <TextField
+            id="standard-basic"
+            label="Макс:"
+            type="number"
+            name="price.max"
+            value={values.price.max}
+            onChange={handleChange}
+          />
+        </FormGroup>
+        <FormGroup className={classes.buttonsGroup}>
+          <Button variant="contained" color="primary" type={"submit"}>
+            Фільтрувати
+          </Button>
+          <Button variant="contained" color="secondary" type="reset">
+            Скинути
+          </Button>
+        </FormGroup>
+      </FormControl>
+    </form>
+  );
+};
 
 export default Filters;
