@@ -10,8 +10,13 @@ with open(user_agents_path) as af:
 
 
 def fetch(url):
-    text = get(url, headers={"User-Agent": choice(user_agents)}).text
+    text = load_data(url).text
     return BeautifulSoup(text, "lxml")
+
+
+def load_data(url):
+    text = get(url, headers={"User-Agent": choice(user_agents)})
+    return text
 
 
 def extract_price(price_text):
