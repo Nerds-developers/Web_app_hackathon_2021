@@ -1,6 +1,6 @@
 import re
 
-from backend.providers import fetch, extract_price, clean_title, calc_price_for_one_kg
+from backend.providers.helpers import fetch, extract_price, clean_title, calc_price_for_one_kg
 from backend.core.typing import ProductItem
 
 query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
