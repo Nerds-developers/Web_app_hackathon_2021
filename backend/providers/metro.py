@@ -54,7 +54,8 @@ def get_int_volumes(prices_table):
 
 
 def get_title(product_page_parsed):
-    title = product_page_parsed.find("h3", class_="productDetail_right_name").text
+    title = product_page_parsed.find("h3", class_="productDetail_right_name").\
+        text.strip().lower()
     return title
 
 
