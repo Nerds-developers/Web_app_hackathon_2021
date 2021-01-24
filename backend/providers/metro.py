@@ -24,7 +24,7 @@ def get_product_links(search_result):
 def parse_product_items(prod_link):
     product_page_parsed = fetch(prod_link)
     prices, volumes = parse_price_data(product_page_parsed)
-    title = product_page_parsed.find("h3", class_="productDetail_right_name").text
+    title = get_title(product_page_parsed)
     price_coef = get_price_coefficient(title)
     producer = get_producer(product_page_parsed)
     final_title = clean_title(title, producer)
@@ -51,6 +51,11 @@ def get_int_volumes(prices_table):
     text_volumes = [volume.text for volume in prices_table.find_all("td", text=re.compile(r"^.+шт.*$"))]
     volumes = [re.findall(r"\d+", text_volume)[0] for text_volume in text_volumes]
     return volumes
+
+
+def get_title(product_page_parsed):
+    title = product_page_parsed.find("h3", class_="productDetail_right_name").text
+    return title
 
 
 def get_producer(product_page_parsed):
