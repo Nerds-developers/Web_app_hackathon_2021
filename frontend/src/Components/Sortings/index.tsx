@@ -12,6 +12,7 @@ export type SortingProps = {
 const useStyles = makeStyles({
 	root: {
 		'marginTop': '10px',
+		'marginRight': '20px',
 		'display': 'flex',
 		'justifyContent': 'flex-end',
 		'alignItems': 'center',

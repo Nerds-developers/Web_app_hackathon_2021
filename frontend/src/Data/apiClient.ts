@@ -4,9 +4,9 @@ import { FilterConfigs } from './api-types'
 
 export default class ApiClient {
 	fetchProducts(queryParams?: QueryParams): Promise<IProduct[]> {
-		alert(JSON.stringify(queryParams))
+		console.log(JSON.stringify(queryParams))
 		return new Promise<IProduct[]>((resolve) => {
-			setTimeout(() => resolve(fakeProducts), 200)
+			setTimeout(() => resolve(fakeProducts), 0)
 		})
 	}
 

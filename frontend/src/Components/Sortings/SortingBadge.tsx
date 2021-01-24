@@ -1,8 +1,6 @@
 import React from 'react'
 import { Box, Chip } from '@material-ui/core'
 import SortingIcon from './SortingIcon'
-import SortIcon from '@material-ui/icons/Sort'
-import { makeStyles } from '@material-ui/core/styles'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 
 export type SortingBadgeProps = {

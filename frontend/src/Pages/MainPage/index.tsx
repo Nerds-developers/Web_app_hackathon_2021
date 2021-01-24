@@ -1,22 +1,29 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useState } from 'react'
 import ApiClient from '../../Data/apiClient'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import ProductList from '../../Components/ProductList'
-import { AppBar, Box, CircularProgress, Divider, Grid, Tab, Tabs, Theme } from '@material-ui/core'
-import { Container } from '@material-ui/core'
-import { useState } from 'react'
 import {
-	FilterConfigs,
-	FilterParams,
-	IProduct,
-	ShopName,
-	SortingParams,
-} from '../../Data/api-types'
+	AppBar,
+	Box,
+	CssBaseline,
+	Drawer,
+	Grid,
+	Hidden,
+	IconButton,
+	Theme,
+	Typography,
+} from '@material-ui/core'
+import { FilterConfigs, FilterParams, IProduct, SortingParams } from '../../Data/api-types'
 import Filters from '../../Components/Filters'
-import selectShopProducts from '../../Data/Selectors/selectShopProducts'
 import Sortings from '../../Components/Sortings'
 import LoadingIndicator from '../../Components/LoadingIndicator'
 import useDeepCompareEffect from 'use-deep-compare-effect'
+import MenuIcon from '@material-ui/icons/Menu'
+import { Toolbar } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
+import { Container } from '@material-ui/core'
+
+const drawerWidth = 240
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -36,32 +43,57 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		body: {
 			height: '100vh',
-			justifyContent: 'space-around',
+			display: 'flex',
+			alignItems: 'flex-start',
+		},
+		drawer: {
+			flexShrink: 1,
+		},
+		appBar: {
+			zIndex: theme.zIndex.drawer + 1,
+			position: 'relative',
+		},
+		menuButton: {
+			marginRight: theme.spacing(2),
+		},
+		toolbar: theme.mixins.toolbar,
+		drawerPaper: {
+			position: 'relative',
+			[theme.breakpoints.down('sm')]: {
+				position: 'fixed',
+			},
+		},
+		content: {
+			display: 'flex',
+			justifyContent: 'center',
+		},
+		closeMenuButton: {
+			marginRight: 'auto',
+			marginLeft: 0,
 		},
 	})
 )
-
-export type MainPageProps = {
-	apiClient: ApiClient
-	filterConfigs: FilterConfigs
-}
 
 type DataState = { isLoaded: boolean; data: IProduct[] }
 
 const dataInitialState: DataState = { isLoaded: false, data: [] }
 const filterParamsInitialState: FilterParams = { selectedProducers: [], price: { min: 0, max: 0 } }
 
+export type MainPageProps = {
+	apiClient: ApiClient
+	filterConfigs: FilterConfigs
+}
+
 const MainPage = ({ apiClient, filterConfigs }: MainPageProps) => {
 	const classes = useStyles()
-	const [tab, setTab] = useState<'all' | ShopName>('all')
+
+	const [mobileOpen, setMobileOpen] = React.useState(false)
 	const [{ isLoaded, data }, setData] = useState<DataState>(dataInitialState)
 	const [filterParams, setFilterParams] = useState<FilterParams>(filterParamsInitialState)
 	const [sortingParams, setSortParams] = useState<SortingParams>({})
 
-	const productsByShop = useMemo(() => selectShopProducts(data, tab), [data, tab])
-
-	const handleChange = (_: any, newValue: 'all' | ShopName) => setTab(newValue)
 	const handleSortingChange = (params: SortingParams) => setSortParams(params)
+	const handleDrawerToggle = () => setMobileOpen(!mobileOpen)
 
 	useDeepCompareEffect(() => {
 		setData({ isLoaded: false, data: [] })
@@ -74,27 +106,49 @@ const MainPage = ({ apiClient, filterConfigs }: MainPageProps) => {
 
 	return (
 		<Container maxWidth="lg" className={classes.root}>
-			<AppBar position="static">
-				<Tabs value={tab} onChange={handleChange} className={classes.tab} centered>
-					<Tab label="Всі" value={'all'} />
-					<Tab label="Novus" value={ShopName.NOVUS} />
-					<Tab label="Ashan" value={ShopName.AUCHAN} />
-					<Tab label="Metro" value={ShopName.METRO} />
-				</Tabs>
+			<CssBaseline />
+			<AppBar position="fixed" className={classes.appBar}>
+				<Toolbar>
+					<IconButton
+						color="inherit"
+						aria-label="open drawer"
+						edge="start"
+						onClick={handleDrawerToggle}
+						className={classes.menuButton}
+					>
+						<MenuIcon />
+					</IconButton>
+					<Typography variant="h6" noWrap>
+						Hackaton 2021
+					</Typography>
+				</Toolbar>
 			</AppBar>
-			<Grid container className={classes.body}>
-				<Grid item sm={1} xs={3} md={3}>
-					<Filters
-						configs={filterConfigs}
-						onFilterSubmit={(filterParams) => setFilterParams(filterParams)}
-					/>
-				</Grid>
-				<Divider orientation="vertical" flexItem />
-				<Grid item xs={8} md={8} justify={'space-between'}>
+			<Box className={classes.body}>
+				<Box hidden={!mobileOpen}>
+					<Drawer
+						classes={{
+							paper: classes.drawerPaper,
+						}}
+						className={classes.drawer}
+						variant="persistent"
+						open={mobileOpen}
+					>
+						<IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
+							<CloseIcon />
+						</IconButton>
+						{
+							<Filters
+								configs={filterConfigs}
+								onFilterSubmit={(filterParams) => setFilterParams(filterParams)}
+							/>
+						}
+					</Drawer>
+				</Box>
+				<Box onClick={() => mobileOpen && setMobileOpen(false)}>
 					<Sortings onChange={handleSortingChange} sortingParams={sortingParams} />
-					{isLoaded ? <ProductList data={productsByShop} /> : <LoadingIndicator />}
-				</Grid>
-			</Grid>
+					{isLoaded ? <ProductList data={data} /> : <LoadingIndicator />}
+				</Box>
+			</Box>
 		</Container>
 	)
 }
