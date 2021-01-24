@@ -1,10 +1,13 @@
-from bs4 import BeautifulSoup
-from random import choice
-from requests import get
 import json
+import os
 import re
+from random import choice
 
-user_agents_path = "/home/alex/PycharmProjects/Web_app_hackathon_2021/backend/providers/user_agents.json"
+from bs4 import BeautifulSoup
+from requests import get
+
+scrpt_path = os.path.realpath(__file__)
+user_agents_path = os.path.dirname(scrpt_path) + "/user_agents.json"
 with open(user_agents_path) as af:
     user_agents = json.load(af)
 
