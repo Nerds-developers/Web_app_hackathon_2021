@@ -26,7 +26,10 @@ def extract_price(price_text):
 
 
 def get_price_coefficient(title):
-    weight_number, weight_measure = re.findall(r"\b(\d+,?\d*)\s*(г|кг)\b", title)[0]
+    found_weights_measures = re.findall(r"\b(\d+,?\d*)\s*(г|кг)\b", title)
+    if len(found_weights_measures) == 0:
+        return 1
+    weight_number, weight_measure = found_weights_measures[0]
     weight_number = re.sub(" ", "", weight_number.strip())
     weight_number = float(re.sub(",", ".", weight_number))
     if weight_measure == "г":
