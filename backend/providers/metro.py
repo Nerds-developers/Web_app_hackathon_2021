@@ -1,6 +1,6 @@
 import re
 
-from backend.providers import fetch, extract_price, clean_title
+from backend.providers import fetch, extract_price, clean_title, get_price_coefficient
 from backend.core.typing import ProductItem
 
 query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
@@ -51,16 +51,6 @@ def get_int_volumes(prices_table):
     text_volumes = [volume.text for volume in prices_table.find_all("td", text=re.compile(r"^.+шт.*$"))]
     volumes = [re.findall(r"\d+", text_volume)[0] for text_volume in text_volumes]
     return volumes
-
-
-def get_price_coefficient(title):
-    weight_number, weight_measure = re.findall(r"\b(\d+)(г|кг)\b", title)[0]
-    weight_number = float(weight_number)
-    if weight_measure == "г":
-        price_coef = 1 / (weight_number / 1000)
-    else:
-        price_coef = 1 / weight_number
-    return price_coef
 
 
 def get_producer(product_page_parsed):
