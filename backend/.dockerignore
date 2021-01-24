@@ -1,0 +1,6 @@
+.idea
+.venv
+.flake8
+.pre-commit-config.yaml
+README.md
+poetry.toml
