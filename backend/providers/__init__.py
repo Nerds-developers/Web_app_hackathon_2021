@@ -41,6 +41,11 @@ def get_price_coefficient(title):
 
 def clean_title(title, producer):
     title = re.sub(r"\b(\d+)(г|кг)\b", "", title.lower())
-    title = re.sub(r"\s+", " ", title)
     title = re.sub(producer, "", title).strip()
+    title = re.sub(r"\s+", " ", title)
     return title
+
+
+def calc_price_for_one_kg(title, cost):
+    price_coef = get_price_coefficient(title)
+    return round(price_coef * cost, 2)

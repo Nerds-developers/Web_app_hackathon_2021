@@ -1,6 +1,6 @@
 import re
 
-from backend.providers import fetch, extract_price, clean_title, get_price_coefficient
+from backend.providers import fetch, extract_price, clean_title, calc_price_for_one_kg
 from backend.core.typing import ProductItem
 
 query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
@@ -23,14 +23,13 @@ def get_product_links(search_result):
 
 def parse_product_items(prod_link):
     product_page_parsed = fetch(prod_link)
-    prices, volumes = parse_price_data(product_page_parsed)
+    costs, volumes = parse_price_data(product_page_parsed)
     title = get_title(product_page_parsed)
-    price_coef = get_price_coefficient(title)
     producer = get_producer(product_page_parsed)
     final_title = clean_title(title, producer)
-    items = [ProductItem(title=final_title, cost=price, price=price * price_coef,
+    items = [ProductItem(title=final_title, cost=cost, price=calc_price_for_one_kg(title, cost),
                          link=prod_link, packages_number=volume, producer=producer)
-             for price, volume in zip(prices, volumes)]
+             for cost, volume in zip(costs, volumes)]
     return items
 
 

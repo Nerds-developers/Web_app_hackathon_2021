@@ -1,7 +1,7 @@
 import re
 
 from backend.core.typing import ProductItem
-from backend.providers import fetch, get_price_coefficient, clean_title
+from backend.providers import fetch, calc_price_for_one_kg, clean_title
 
 query_link = "https://zakaz.atbmarket.com/search/450?text=гречана"
 host = "https://zakaz.atbmarket.com"
@@ -25,10 +25,9 @@ def get_product_item(link):
     product_page = fetch(link)
     title = get_title(product_page)
     producer = get_producer(product_page)
-    price = get_price(product_page)
-    price_coef = get_price_coefficient(title)
-    title = clean_title(title, producer)
-    item = ProductItem(title=title, cost=price, price=price * price_coef,
+    cost = get_cost(product_page)
+    final_title = clean_title(title, producer)
+    item = ProductItem(title=final_title, cost=cost, price=calc_price_for_one_kg(title, cost),
                        link=link, packages_number=1, producer=producer)
     return item
 
@@ -43,7 +42,7 @@ def get_producer(page):
     return producer
 
 
-def get_price(page):
+def get_cost(page):
     price_tags = page.find("div", class_="product-right").find("span", "price").contents
     before_point = price_tags[0]
     after_point = re.findall(r"\b(\d+)\b", price_tags[1].text)[0]
