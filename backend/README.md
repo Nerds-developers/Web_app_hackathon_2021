@@ -18,3 +18,19 @@ install pre-commit-hook:
 ```shell
 pre-commit install
 ```
+
+## Install for production
+
+install [docker](https://docs.docker.com/engine/install/)
+
+install [docker-compose](https://docs.docker.com/compose/install/)
+
+to set up all containers run command from root directory of the project:
+```shell
+docker-compose up -d build
+```
+
+to set down run command from this directory :
+```shell
+docker-compose down
+```
