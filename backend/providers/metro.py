@@ -42,7 +42,7 @@ def parse_price_data(product_page_parsed):
 
 
 def get_float_prices(prices_table):
-    prices = [extract_price(price_text) for price_text in
+    prices = [extract_price(price_text.text) for price_text in
               prices_table.find_all("strong")]
     return prices
 

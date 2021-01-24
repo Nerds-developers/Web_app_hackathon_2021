@@ -20,7 +20,7 @@ def load_data(url):
 
 
 def extract_price(price_text):
-    price_with_comma = re.sub(r"(грн| )", "", price_text.text).strip()
+    price_with_comma = re.sub(r"(грн| )", "", price_text).strip()
     price_in_number = float(re.sub(r",", ".", price_with_comma))
     return price_in_number
 
