@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import ApiClient from '../../Data/apiClient'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import ProductList from '../../Components/ProductList'
+import EqualizerIcon from '@material-ui/icons/Equalizer'
 import {
 	AppBar,
 	Box,
+	Button,
 	CssBaseline,
 	Drawer,
 	Grid,
@@ -48,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		drawer: {
 			flexShrink: 1,
+			width: '330px',
 		},
 		appBar: {
 			zIndex: theme.zIndex.drawer + 1,
@@ -70,6 +73,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		closeMenuButton: {
 			marginRight: 'auto',
 			marginLeft: 0,
+		},
+		appBarContent: {
+			display: 'flex',
+			justifyContent: 'space-between',
+			paddingRight: '10px',
 		},
 	})
 )
@@ -108,20 +116,29 @@ const MainPage = ({ apiClient, filterConfigs }: MainPageProps) => {
 		<Container maxWidth="lg" className={classes.root}>
 			<CssBaseline />
 			<AppBar position="fixed" className={classes.appBar}>
-				<Toolbar>
-					<IconButton
+				<Box className={classes.appBarContent}>
+					<Toolbar>
+						<IconButton
+							color="inherit"
+							aria-label="open drawer"
+							edge="start"
+							onClick={handleDrawerToggle}
+							className={classes.menuButton}
+						>
+							<MenuIcon />
+						</IconButton>
+						<Typography variant="h6" noWrap>
+							Hackaton 2021
+						</Typography>
+					</Toolbar>
+					<Button
+						startIcon={<EqualizerIcon />}
+						onClick={() => console.log('statistic')}
 						color="inherit"
-						aria-label="open drawer"
-						edge="start"
-						onClick={handleDrawerToggle}
-						className={classes.menuButton}
 					>
-						<MenuIcon />
-					</IconButton>
-					<Typography variant="h6" noWrap>
-						Hackaton 2021
-					</Typography>
-				</Toolbar>
+						Статистика
+					</Button>
+				</Box>
 			</AppBar>
 			<Box className={classes.body}>
 				<Box hidden={!mobileOpen}>
