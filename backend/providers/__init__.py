@@ -33,5 +33,6 @@ def get_price_coefficient(title):
 
 def clean_title(title, producer):
     title = re.sub(r"\b(\d+)(г|кг)\b", "", title.lower())
+    title = re.sub(r"\s+", " ", title)
     title = re.sub(producer, "", title).strip()
     return title
