@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Web_app_hackathon_2021/static/css/main.a89770f9.chunk.css",
+    "main.js": "/Web_app_hackathon_2021/static/js/main.77201d19.chunk.js",
+    "main.js.map": "/Web_app_hackathon_2021/static/js/main.77201d19.chunk.js.map",
+    "runtime-main.js": "/Web_app_hackathon_2021/static/js/runtime-main.5726f9d1.js",
+    "runtime-main.js.map": "/Web_app_hackathon_2021/static/js/runtime-main.5726f9d1.js.map",
+    "static/js/2.677cda56.chunk.js": "/Web_app_hackathon_2021/static/js/2.677cda56.chunk.js",
+    "static/js/2.677cda56.chunk.js.map": "/Web_app_hackathon_2021/static/js/2.677cda56.chunk.js.map",
+    "static/js/3.24861a67.chunk.js": "/Web_app_hackathon_2021/static/js/3.24861a67.chunk.js",
+    "static/js/3.24861a67.chunk.js.map": "/Web_app_hackathon_2021/static/js/3.24861a67.chunk.js.map",
+    "index.html": "/Web_app_hackathon_2021/index.html",
+    "static/css/main.a89770f9.chunk.css.map": "/Web_app_hackathon_2021/static/css/main.a89770f9.chunk.css.map",
+    "static/js/2.677cda56.chunk.js.LICENSE.txt": "/Web_app_hackathon_2021/static/js/2.677cda56.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/Web_app_hackathon_2021/static/media/background.e09075e3.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5726f9d1.js",
+    "static/js/2.677cda56.chunk.js",
+    "static/css/main.a89770f9.chunk.css",
+    "static/js/main.77201d19.chunk.js"
+  ]
+}
