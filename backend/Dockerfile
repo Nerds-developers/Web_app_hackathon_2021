@@ -39,7 +39,8 @@ RUN apt-get update \
     # deps for installing poetry
     curl \
     # deps for building python deps
-    build-essential
+    build-essential \
+    git
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
@@ -60,3 +61,5 @@ RUN mkdir backend
 COPY ./core ./backend/core
 COPY ./web ./backend/web
 COPY ./providers ./backend/providers
+COPY ./nlp ./backend/nlp
+COPY ./processing ./backend/processing
