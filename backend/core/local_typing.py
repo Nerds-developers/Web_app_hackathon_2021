@@ -17,6 +17,6 @@ class ProductItem(BaseModel):
 class ProductInterface(BaseModel):
     """Typing for sending products to frontend"""
     title: str
-    price: float
+    prices: Tuple[float, ...]
     producers: Tuple[str, ...]
     links: Tuple[str, ...]
