@@ -62,7 +62,3 @@ def get_producer(product_page_parsed):
     producer = product_page_parsed.find("div", class_="productDetail_tabs").find("table", class_="table").find("a").\
         text.lower()
     return producer
-
-
-for i in parse():
-    print(i)

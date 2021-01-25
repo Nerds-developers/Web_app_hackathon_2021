@@ -46,7 +46,3 @@ def get_producer(page):
     producer_tag = page.find("a", class_="BigProductCardTrademarkName")
     producer = producer_tag.text.lower() if producer_tag is not None else "self-developed"
     return producer
-
-
-for item in parse():
-    print(item)

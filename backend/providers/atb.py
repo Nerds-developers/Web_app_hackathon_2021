@@ -48,7 +48,3 @@ def get_cost(page):
     after_point = re.findall(r"\b(\d+)\b", price_tags[1].text)[0]
     price = float("{}.{}".format(before_point, after_point))
     return price
-
-
-for item in parse():
-    print(item)
