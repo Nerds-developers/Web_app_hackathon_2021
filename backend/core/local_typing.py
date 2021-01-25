@@ -1,5 +1,6 @@
 """Types used in project"""
 from pydantic import BaseModel
+from typing import List
 
 
 class ProductItem(BaseModel):
@@ -11,3 +12,11 @@ class ProductItem(BaseModel):
     link: str
     packages_number: int
     producer: str
+
+
+class ProductInterface(BaseModel):
+    """Product item for frontend"""
+    title: str
+    prices: List[float]
+    producers: List[str]
+    links: List[str]

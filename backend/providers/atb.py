@@ -1,6 +1,6 @@
 import re
 
-from backend.core.typing import ProductItem
+from backend.core.local_typing import ProductItem
 from backend.providers.helpers import fetch, calc_price_for_one_kg, clean_title
 
 query_link = "https://zakaz.atbmarket.com/search/450?text=гречана"
@@ -48,7 +48,3 @@ def get_cost(page):
     after_point = re.findall(r"\b(\d+)\b", price_tags[1].text)[0]
     price = float("{}.{}".format(before_point, after_point))
     return price
-
-
-for item in parse():
-    print(item)

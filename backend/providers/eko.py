@@ -1,7 +1,7 @@
 import re
 
 from backend.providers.helpers import load_data, fetch, extract_price, calc_price_for_one_kg, clean_title
-from backend.core.typing import ProductItem
+from backend.core.local_typing import ProductItem
 
 query_url = "https://stores-api.zakaz.ua/stores/48280214/products/search/?q=крупа гречана"
 
@@ -46,7 +46,3 @@ def get_producer(page):
     producer_tag = page.find("a", class_="BigProductCardTrademarkName")
     producer = producer_tag.text.lower() if producer_tag is not None else "self-developed"
     return producer
-
-
-for item in parse():
-    print(item)

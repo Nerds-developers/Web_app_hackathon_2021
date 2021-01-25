@@ -1,7 +1,7 @@
 import re
 
 from backend.providers.helpers import fetch, extract_price, clean_title, calc_price_for_one_kg
-from backend.core.typing import ProductItem
+from backend.core.local_typing import ProductItem
 
 query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
 
@@ -62,7 +62,3 @@ def get_producer(product_page_parsed):
     producer = product_page_parsed.find("div", class_="productDetail_tabs").find("table", class_="table").find("a").\
         text.lower()
     return producer
-
-
-for i in parse():
-    print(i)
