@@ -1,6 +1,6 @@
 """Types used in project"""
-from typing import Tuple
 from pydantic import BaseModel
+from typing import List
 
 
 class ProductItem(BaseModel):
@@ -15,8 +15,8 @@ class ProductItem(BaseModel):
 
 
 class ProductInterface(BaseModel):
-    """Typing for sending products to frontend"""
+    """Product item for frontend"""
     title: str
-    prices: Tuple[float, ...]
-    producers: Tuple[str, ...]
-    links: Tuple[str, ...]
+    prices: List[float]
+    producers: List[str]
+    links: List[str]
