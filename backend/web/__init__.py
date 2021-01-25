@@ -1,10 +1,12 @@
 from flask import Flask
+from flask_restful import Api
 
-from backend.web.route import index
+from backend.web.api import GrechkaApi
 
 
 def create_app():
     """Application factory for Flask"""
     app = Flask(__name__)
-    app.register_blueprint(index)
+    api = Api(app)
+    api.add_resource(GrechkaApi, "/api/grechka")
     return app
