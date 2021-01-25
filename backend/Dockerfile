@@ -38,6 +38,7 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     # deps for installing poetry
     curl \
+    git \
     # deps for building python deps
     build-essential \
     git
@@ -63,3 +64,6 @@ COPY ./web ./backend/web
 COPY ./providers ./backend/providers
 COPY ./nlp ./backend/nlp
 COPY ./processing ./backend/processing
+
+# running server
+CMD ["uwsgi", "--ini", "backend/web/uwsgi.ini"]
