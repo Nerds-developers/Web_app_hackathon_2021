@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 		'display': 'flex',
 		'justifyContent': 'flex-end',
 		'alignItems': 'center',
+
 		'& .MuiChip-root': {
 			marginLeft: '10px',
 		},
@@ -28,7 +29,6 @@ const Sortings = ({ sortingParams, onChange }: SortingProps) => {
 	const handleClick = (column: string, order: 'asc' | 'desc') => {
 		onChange({ column, order })
 	}
-	const handleReset = () => onChange({})
 
 	return (
 		<Box className={classes.root}>
@@ -42,14 +42,12 @@ const Sortings = ({ sortingParams, onChange }: SortingProps) => {
 					'price',
 					sortingParams.order === 'asc' ? 'desc' : 'asc'
 				)}
-				handleReset={handleReset}
 			/>
 			<SortingBadge
 				order={sortingParams.order}
 				isActive={sortingParams.column === 'name'}
 				title={'За назвою'}
 				handleClick={handleClick.bind(null, 'name', sortingParams.order === 'asc' ? 'desc' : 'asc')}
-				handleReset={handleReset}
 			/>
 		</Box>
 	)

@@ -1,0 +1,146 @@
+{
+	"eqlts": [
+		{
+			"title": "крупа гречана",
+			"prices": [26.78, 34.5, 31.99, 62.19, 35.89],
+			"producers": ["aro", "розумний вибір", "self-developed", "моя країна", "хуторок"],
+			"links": [
+				"https://shop.metro.ua/ua/aro-krupa-hrechana-50kh/317364p/",
+				"https://zakaz.atbmarket.com/product/450/63024",
+				"https://eko.zakaz.ua/uk/products/ekomarket00000000659991/krupa/",
+				"https://eko.zakaz.ua/uk/products/04820132680033/krupa-grechka-moia-krayina-1000g/",
+				"https://eko.zakaz.ua/uk/products/04820211661410/krupa-khutorok-800g-ukrayina/"
+			]
+		},
+		{
+			"title": "крупа гречана ядра",
+			"prices": [34.5],
+			"producers": ["aro"],
+			"links": ["https://shop.metro.ua/ua/krupa-hrechana-aro-yadra-1kh/314043p/"]
+		},
+		{
+			"title": "крупа гречана ядро перший сорт",
+			"prices": [34.3],
+			"producers": ["aro"],
+			"links": ["https://shop.metro.ua/ua/krupa-hrechana-aro-yadro-pershyi-sort-3kh/314568p/"]
+		},
+		{
+			"title": "крупа гречана непропарена",
+			"prices": [59.9, 56.9],
+			"producers": ["metro chef", "metro chef"],
+			"links": [
+				"https://shop.metro.ua/ua/krupa-hrechana-metro-chef-neproparena-1kh/314205p/",
+				"https://shop.metro.ua/ua/krupa-hrechana-metro-chef-neproparena-1kh/314205p/"
+			]
+		},
+		{
+			"title": "крупа гречана швидкорозварювана",
+			"prices": [49.9, 46.9, 44.9],
+			"producers": ["metro chef", "metro chef", "metro chef"],
+			"links": [
+				"https://shop.metro.ua/ua/krupa-hrechana-metro-chef-shvydkorozvariuvana-1kh/314760p/",
+				"https://shop.metro.ua/ua/krupa-hrechana-metro-chef-shvydkorozvariuvana-1kh/314760p/",
+				"https://shop.metro.ua/ua/krupa-hrechana-metro-chef-shvydkorozvariuvana-1kh/314760p/"
+			]
+		},
+		{
+			"title": "крупа гречана майфайна ядриця швидкорозварювана",
+			"prices": [43.8, 43.0],
+			"producers": ["олімп", "олімп"],
+			"links": [
+				"https://shop.metro.ua/ua/krupa-hrechana-olimp-maifaina-yadrytsia-shvydkorozvariuvana-1kh/313937p/",
+				"https://shop.metro.ua/ua/krupa-hrechana-olimp-maifaina-yadrytsia-shvydkorozvariuvana-1kh/313937p/"
+			]
+		},
+		{
+			"title": "крупа гречана ядриця швидкорозварювана",
+			"prices": [59.5],
+			"producers": ["сквирянка"],
+			"links": [
+				"https://shop.metro.ua/ua/krupa-hrechana-skvyrianka-yadrytsia-shvydkorozvariuvana-800h/293759p/"
+			]
+		},
+		{
+			"title": "крупа гречана ядриця",
+			"prices": [44.88, 58.29, 54.95, 47.9, 49.99, 34.99],
+			"producers": [
+				"хуторок",
+				"сквирянка",
+				"саркара продукт",
+				"панська нива",
+				"щедрі брати",
+				"перший ряд"
+			],
+			"links": [
+				"https://shop.metro.ua/ua/krupa-hrechana-khutorok-yadrytsia-800h/284327p/",
+				"https://eko.zakaz.ua/uk/products/04820006010409/krupa-grechka-skvirianka-800g/",
+				"https://eko.zakaz.ua/uk/products/04820160760325/krupa-grechka-sarkara-produkt-1000g/",
+				"https://eko.zakaz.ua/uk/products/04820129370305/krupa-grechka-panska-niva-1000g/",
+				"https://eko.zakaz.ua/uk/products/04820067170081/krupa-grechka-shchedri-brati-1000g/",
+				"https://eko.zakaz.ua/uk/products/04820174061364/krupa-grechka-pershii-riad-900g/"
+			]
+		},
+		{
+			"title": "крупа гречана ядриця непропарена 1 гатунок",
+			"prices": [47.0],
+			"producers": ["своя лінія"],
+			"links": ["https://zakaz.atbmarket.com/product/450/135598"]
+		},
+		{
+			"title": "крупа гречана ядриця смажена",
+			"prices": [51.3],
+			"producers": ["attuale"],
+			"links": ["https://zakaz.atbmarket.com/product/450/122361"]
+		},
+		{
+			"title": "крупа гречана ядриця відбірна 4х125",
+			"prices": [51.4],
+			"producers": ["своя лінія"],
+			"links": ["https://zakaz.atbmarket.com/product/450/82909"]
+		},
+		{
+			"title": "крупа гречана з грибами",
+			"prices": [168.8],
+			"producers": ["trapeza"],
+			"links": ["https://zakaz.atbmarket.com/product/450/136735"]
+		},
+		{
+			"title": "каша молочна швидкорозчинна гречана",
+			"prices": [270.0],
+			"producers": ["milupa"],
+			"links": ["https://zakaz.atbmarket.com/product/450/119242"]
+		},
+		{
+			"title": "консерви гречана зі свининою",
+			"prices": [91.76],
+			"producers": ["hapay!"],
+			"links": ["https://zakaz.atbmarket.com/product/450/147073"]
+		},
+		{
+			"title": "крупа гречана ядриця швидкорозварювальна",
+			"prices": [47.55],
+			"producers": ["олімп"],
+			"links": ["https://eko.zakaz.ua/uk/products/04820055940115/krupa-grechka-olimp-1000g/"]
+		},
+		{
+			"title": "крупа гречана несмажена",
+			"prices": [73.19],
+			"producers": ["жменька"],
+			"links": ["https://eko.zakaz.ua/uk/products/04820038701832/krupa-grechka-zhmenka-900g/"]
+		},
+		{
+			"title": "крупа гречана в пакетиках",
+			"prices": [41.85],
+			"producers": ["жменька"],
+			"links": ["https://eko.zakaz.ua/uk/products/04820038700347/krupa-grechka-zhmenka-400g/"]
+		},
+		{
+			"title": "крупа гречана ядриця в пакетиках україна",
+			"prices": [30.09],
+			"producers": ["хуторок панський"],
+			"links": [
+				"https://eko.zakaz.ua/uk/products/04820101711065/krupa-grechka-khutorok-panskii-400g-ukrayina/"
+			]
+		}
+	]
+}

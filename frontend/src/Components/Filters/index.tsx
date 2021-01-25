@@ -11,7 +11,7 @@ import {
 	makeStyles,
 	TextField,
 } from '@material-ui/core'
-import { FilterConfigs, FilterParams } from '../../Data/api-types'
+import { FilterParams } from '../../Data/api-types'
 import { useFormik } from 'formik'
 import Slider from './Slider'
 
@@ -38,24 +38,15 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export type FiltersProps = {
-	configs: FilterConfigs
+	configs: FilterParams
 	onFilterSubmit: (filterParams: FilterParams) => void
 }
 
-const Filters = ({ configs: { producers }, onFilterSubmit }: FiltersProps) => {
+const Filters = ({ configs, onFilterSubmit }: FiltersProps) => {
+	const { producers, minPrice, maxPrice } = configs
 	const classes = useStyles()
-
-	const {
-		values,
-		handleChange,
-		handleSubmit,
-		handleReset,
-		setFieldValue,
-	} = useFormik<FilterParams>({
-		initialValues: {
-			selectedProducers: [],
-			price: { min: 10, max: 80 },
-		},
+	const { values, handleChange, handleSubmit, handleReset, setValues } = useFormik<FilterParams>({
+		initialValues: { producers: Array.from(producers), minPrice, maxPrice },
 		onSubmit: (values) => {
 			onFilterSubmit(values)
 		},
@@ -66,18 +57,18 @@ const Filters = ({ configs: { producers }, onFilterSubmit }: FiltersProps) => {
 			<FormControl component="fieldset" className={classes.formControl}>
 				<FormLabel component="legend">Виробники: </FormLabel>
 				<FormGroup>
-					{producers.map(({ label, id }) => (
+					{producers.map((producer) => (
 						<FormControlLabel
-							key={String(id)}
+							key={producer}
 							control={
 								<Checkbox
-									checked={values?.selectedProducers?.includes(String(id))}
+									checked={values?.producers?.includes(producer)}
 									onChange={handleChange}
-									name="selectedProducers"
-									value={id}
+									name="producers"
+									value={producer}
 								/>
 							}
-							label={label}
+							label={producer}
 						/>
 					))}
 				</FormGroup>
@@ -85,24 +76,26 @@ const Filters = ({ configs: { producers }, onFilterSubmit }: FiltersProps) => {
 				<FormGroup>
 					<FormLabel component="legend">Ціна: </FormLabel>
 					<Slider
-						minValue={values?.price.min}
-						maxValue={values?.price.max}
-						handleChange={(min, max) => setFieldValue('price', { min, max })}
+						minValue={values?.minPrice}
+						maxValue={values?.maxPrice}
+						handleChange={(minPrice, maxPrice) =>
+							setValues({ minPrice, maxPrice, producers: Array.from(values?.producers) })
+						}
 					/>
 					<TextField
 						id="standard-basic"
 						label="Мін:"
 						type="number"
-						name="price.min"
-						value={values?.price.min}
+						name="minPrice"
+						value={values?.minPrice}
 						onChange={handleChange}
 					/>
 					<TextField
 						id="standard-basic"
 						label="Макс:"
 						type="number"
-						name="price.max"
-						value={values.price.max}
+						name="maxPrice"
+						value={values.maxPrice}
 						onChange={handleChange}
 					/>
 				</FormGroup>

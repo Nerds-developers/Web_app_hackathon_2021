@@ -9,10 +9,6 @@ export interface IProducer {
 	id: number
 }
 
-export type FilterConfigs = {
-	producers: IProducer[]
-}
-
 export interface IShopProductItem {
 	shopName: string
 	price: number
@@ -20,24 +16,33 @@ export interface IShopProductItem {
 }
 
 export interface IProduct {
-	id: number
-	name: string
+	title: string
 	producer: string
 	image: string
-	shopItems: IShopProductItem[]
+	link: string
+	price: number
 }
 
 export type SortingParams = {
-	order?: 'asc' | 'desc'
-	column?: string
+	order: 'asc' | 'desc'
+	column: string
 }
 
 export type FilterParams = {
-	selectedProducers: string[]
-	price: { min: number; max: number }
+	producers: string[]
+	minPrice: number
+	maxPrice: number
 }
 
 export type QueryParams = {
 	sorting: SortingParams
-	filters: FilterParams
+	filters: FilterParams | null
+	page: number
+}
+
+export type ApiData = {
+	products: IProduct[]
+	minPrice: number
+	maxPrice: number
+	producers: string[]
 }

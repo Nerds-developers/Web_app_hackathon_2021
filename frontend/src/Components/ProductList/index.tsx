@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles({
 	gridList: {
 		padding: '5px 20px',
-		justifyContent: 'space-around',
+		justifyContent: 'flex-start',
 	},
 })
 

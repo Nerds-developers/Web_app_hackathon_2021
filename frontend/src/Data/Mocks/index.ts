@@ -1,19 +1,56 @@
-import { IProduct, IShopProductItem, ShopName } from '../api-types'
-import { FilterConfigs } from '../api-types'
+import { ApiData, IProduct, IShopProductItem, ShopName } from '../api-types'
+import data from './data.json'
 
-export const fakeProducts = [...generateProduct(12)]
+function transformData(items: any): ApiData {
+	const productMap = items.eqlts.reduce(
+		(
+			products: Record<string, IProduct>,
+			{
+				title,
+				prices,
+				producers,
+				links,
+				images = [],
+			}: { title: string; prices: number[]; producers: string[]; links: string[]; images: string[] }
+		) => {
+			prices.forEach((price, index) => {
+				const label = [title, price, producers[index], links[index]].join(':')
+				products[label] = {
+					title,
+					price,
+					producer: producers[index],
+					link: links[index],
+					image: images[index],
+				}
+			})
 
-function generateProduct(count: number): IProduct[] {
-	return new Array(count).fill(null).map((_, index) => {
-		return {
-			id: index + 1,
-			name: `Греча ${index + 1}`,
-			producer: `Завод ${index + 1}`,
-			image: 'https://material-ui.com/static/images/grid-list/camera.jpg',
-			shopItems: generateShopItem(randomInt(0, 4)),
-		}
+			return products
+		},
+		{}
+	)
+
+	const products: IProduct[] = Object.values(productMap)
+
+	const [head, ...tail] = products
+	let minPrice = head.price
+	let maxPrice = head.price
+	const producers = new Set([head.producer])
+
+	tail.forEach(({ price, producer }) => {
+		producers.add(producer)
+		minPrice = Math.min(minPrice, price)
+		maxPrice = Math.max(maxPrice, price)
 	})
+
+	return {
+		products,
+		minPrice,
+		maxPrice,
+		producers: Array.from(producers),
+	}
 }
+
+export const fakeProducts = transformData(data)
 
 function randomInt(min: number, max: number): number {
 	return Math.floor(Math.random() * (max - min) + min)
@@ -31,27 +68,27 @@ function generateShopItem(amount: number): IShopProductItem[] {
 	})
 }
 
-export const filterConfigs: FilterConfigs = {
-	producers: [
-		{
-			id: 1,
-			label: 'Art foods',
-		},
-		{
-			id: 2,
-			label: 'Терра',
-		},
-		{
-			id: 3,
-			label: 'Culinaro',
-		},
-		{
-			id: 4,
-			label: 'Zdorovo',
-		},
-		{
-			id: 5,
-			label: 'Август',
-		},
-	],
-}
+// export const filterConfigs: FilterConfigs = {
+// 	producers: [
+// 		{
+// 			id: 1,
+// 			label: 'Art foods',
+// 		},
+// 		{
+// 			id: 2,
+// 			label: 'Терра',
+// 		},
+// 		{
+// 			id: 3,
+// 			label: 'Culinaro',
+// 		},
+// 		{
+// 			id: 4,
+// 			label: 'Zdorovo',
+// 		},
+// 		{
+// 			id: 5,
+// 			label: 'Август',
+// 		},
+// 	],
+// }

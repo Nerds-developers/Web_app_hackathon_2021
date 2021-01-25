@@ -9,23 +9,20 @@ import {
 	Button,
 	CssBaseline,
 	Drawer,
-	Grid,
-	Hidden,
 	IconButton,
 	Theme,
 	Typography,
 } from '@material-ui/core'
-import { FilterConfigs, FilterParams, IProduct, SortingParams } from '../../Data/api-types'
+import { ApiData, FilterParams, SortingParams } from '../../Data/api-types'
 import Filters from '../../Components/Filters'
 import Sortings from '../../Components/Sortings'
 import LoadingIndicator from '../../Components/LoadingIndicator'
-import useDeepCompareEffect from 'use-deep-compare-effect'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Toolbar } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import { Container } from '@material-ui/core'
-
-const drawerWidth = 240
+import Pagination from '../../Components/Pagination'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -47,10 +44,14 @@ const useStyles = makeStyles((theme: Theme) =>
 			height: '100vh',
 			display: 'flex',
 			alignItems: 'flex-start',
+			overflowY: 'auto',
+			padding: '10px',
+			width: '100%',
 		},
 		drawer: {
 			flexShrink: 1,
 			width: '330px',
+			marginRight: '10px',
 		},
 		appBar: {
 			zIndex: theme.zIndex.drawer + 1,
@@ -67,8 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 		},
 		content: {
-			display: 'flex',
-			justifyContent: 'center',
+			width: '100%',
 		},
 		closeMenuButton: {
 			marginRight: 'auto',
@@ -82,35 +82,45 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 )
 
-type DataState = { isLoaded: boolean; data: IProduct[] }
+type ApiResponseInitialState = { isLoaded: boolean; apiData: ApiData }
 
-const dataInitialState: DataState = { isLoaded: false, data: [] }
-const filterParamsInitialState: FilterParams = { selectedProducers: [], price: { min: 0, max: 0 } }
+const apiInitialState: ApiResponseInitialState = {
+	isLoaded: false,
+	apiData: { products: [], producers: [], minPrice: 0, maxPrice: 0 },
+}
+const buildDefaultStateForFilter = ({ minPrice, maxPrice, producers }: ApiData): FilterParams => ({
+	producers,
+	maxPrice,
+	minPrice,
+})
 
 export type MainPageProps = {
 	apiClient: ApiClient
-	filterConfigs: FilterConfigs
 }
 
-const MainPage = ({ apiClient, filterConfigs }: MainPageProps) => {
+const MainPage = ({ apiClient }: MainPageProps) => {
 	const classes = useStyles()
 
-	const [mobileOpen, setMobileOpen] = React.useState(false)
-	const [{ isLoaded, data }, setData] = useState<DataState>(dataInitialState)
-	const [filterParams, setFilterParams] = useState<FilterParams>(filterParamsInitialState)
-	const [sortingParams, setSortParams] = useState<SortingParams>({})
+	const [{ isLoaded, apiData }, setApiResponse] = useState<ApiResponseInitialState>(apiInitialState)
+	const [filterParams, setFilterParams] = useState<FilterParams | null>(null)
+
+	const [isFilterOpen, setFilterState] = useState(false)
+	const [sortingParams, setSortParams] = useState<SortingParams>({ column: 'price', order: 'asc' })
+	const [page, setPage] = useState<number>(1)
 
 	const handleSortingChange = (params: SortingParams) => setSortParams(params)
-	const handleDrawerToggle = () => setMobileOpen(!mobileOpen)
+	const handleDrawerToggle = () => setFilterState(!isFilterOpen)
+	const handlePageChange = (page: number) => setPage(page)
 
 	useDeepCompareEffect(() => {
-		setData({ isLoaded: false, data: [] })
+		isLoaded && setApiResponse(apiInitialState)
 		apiClient
-			.fetchProducts({ sorting: sortingParams, filters: filterParams })
-			.then((data: IProduct[]) => {
-				setData({ isLoaded: true, data: data })
+			.fetchProducts({ sorting: sortingParams, filters: filterParams, page })
+			.then((data: ApiData) => {
+				setApiResponse({ isLoaded: true, apiData: data })
 			})
-	}, [sortingParams, filterParams])
+			.catch((e) => console.error(e))
+	}, [sortingParams, filterParams, page])
 
 	return (
 		<Container maxWidth="lg" className={classes.root}>
@@ -141,30 +151,43 @@ const MainPage = ({ apiClient, filterConfigs }: MainPageProps) => {
 				</Box>
 			</AppBar>
 			<Box className={classes.body}>
-				<Box hidden={!mobileOpen}>
-					<Drawer
-						classes={{
-							paper: classes.drawerPaper,
-						}}
-						className={classes.drawer}
-						variant="persistent"
-						open={mobileOpen}
-					>
-						<IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
-							<CloseIcon />
-						</IconButton>
-						{
-							<Filters
-								configs={filterConfigs}
-								onFilterSubmit={(filterParams) => setFilterParams(filterParams)}
-							/>
-						}
-					</Drawer>
-				</Box>
-				<Box onClick={() => mobileOpen && setMobileOpen(false)}>
-					<Sortings onChange={handleSortingChange} sortingParams={sortingParams} />
-					{isLoaded ? <ProductList data={data} /> : <LoadingIndicator />}
-				</Box>
+				{isLoaded ? (
+					<>
+						<Box hidden={!isFilterOpen}>
+							<Drawer
+								classes={{
+									paper: classes.drawerPaper,
+								}}
+								className={classes.drawer}
+								variant="persistent"
+								open={isFilterOpen}
+							>
+								<IconButton onClick={handleDrawerToggle} className={classes.closeMenuButton}>
+									<CloseIcon />
+								</IconButton>
+								{
+									<Filters
+										configs={buildDefaultStateForFilter(apiData)}
+										onFilterSubmit={(filterParams) => setFilterParams(filterParams)}
+									/>
+								}
+							</Drawer>
+						</Box>
+						<Box onClick={() => isFilterOpen && setFilterState(false)} className={classes.content}>
+							<>
+								<Sortings onChange={handleSortingChange} sortingParams={sortingParams} />
+								<ProductList data={apiData.products} />
+								<Pagination
+									page={page}
+									onPageChange={handlePageChange}
+									itemsCount={apiData.products.length}
+								/>
+							</>
+						</Box>
+					</>
+				) : (
+					<LoadingIndicator />
+				)}
 			</Box>
 		</Container>
 	)
