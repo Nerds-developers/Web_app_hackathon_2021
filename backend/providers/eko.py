@@ -1,7 +1,7 @@
 import re
 
 from backend.providers.helpers import load_data, fetch, extract_price, calc_price_for_one_kg, clean_title
-from backend.core.typing import ProductItem
+from backend.core.local_typing import ProductItem
 
 query_url = "https://stores-api.zakaz.ua/stores/48280214/products/search/?q=крупа гречана"
 

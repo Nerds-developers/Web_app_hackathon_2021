@@ -1,6 +1,6 @@
 import re
 
-from backend.core.typing import ProductItem
+from backend.core.local_typing import ProductItem
 from backend.providers.helpers import fetch, calc_price_for_one_kg, clean_title
 
 query_link = "https://zakaz.atbmarket.com/search/450?text=гречана"
