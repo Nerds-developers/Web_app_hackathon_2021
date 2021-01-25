@@ -41,7 +41,10 @@ RUN apt-get update \
     git \
     # deps for building python deps
     build-essential \
-    git
+    python3-dev \
+    # libs for mysql
+    default-libmysqlclient-dev \
+    libmariadb3
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
@@ -64,6 +67,9 @@ COPY ./web ./backend/web
 COPY ./providers ./backend/providers
 COPY ./nlp ./backend/nlp
 COPY ./processing ./backend/processing
+
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
 
 # running server
 CMD ["uwsgi", "--ini", "backend/web/uwsgi.ini"]
