@@ -35,7 +35,3 @@ def build_product_interface(products):
         prices.append(prod_item.price)
         links.append(prod_item.link)
     return ProductInterface(title=title, producers=producers, prices=prices, links=links)
-
-
-print(process())
-
