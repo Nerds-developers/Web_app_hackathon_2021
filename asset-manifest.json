@@ -1,23 +1,26 @@
 {
   "files": {
-    "main.css": "/Web_app_hackathon_2021/static/css/main.a89770f9.chunk.css",
-    "main.js": "/Web_app_hackathon_2021/static/js/main.77201d19.chunk.js",
-    "main.js.map": "/Web_app_hackathon_2021/static/js/main.77201d19.chunk.js.map",
-    "runtime-main.js": "/Web_app_hackathon_2021/static/js/runtime-main.5726f9d1.js",
-    "runtime-main.js.map": "/Web_app_hackathon_2021/static/js/runtime-main.5726f9d1.js.map",
-    "static/js/2.677cda56.chunk.js": "/Web_app_hackathon_2021/static/js/2.677cda56.chunk.js",
-    "static/js/2.677cda56.chunk.js.map": "/Web_app_hackathon_2021/static/js/2.677cda56.chunk.js.map",
-    "static/js/3.24861a67.chunk.js": "/Web_app_hackathon_2021/static/js/3.24861a67.chunk.js",
-    "static/js/3.24861a67.chunk.js.map": "/Web_app_hackathon_2021/static/js/3.24861a67.chunk.js.map",
+    "main.css": "/Web_app_hackathon_2021/static/css/main.b5116ad2.chunk.css",
+    "main.js": "/Web_app_hackathon_2021/static/js/main.618a872a.chunk.js",
+    "main.js.map": "/Web_app_hackathon_2021/static/js/main.618a872a.chunk.js.map",
+    "runtime-main.js": "/Web_app_hackathon_2021/static/js/runtime-main.49cf5923.js",
+    "runtime-main.js.map": "/Web_app_hackathon_2021/static/js/runtime-main.49cf5923.js.map",
+    "static/js/2.77dfec93.chunk.js": "/Web_app_hackathon_2021/static/js/2.77dfec93.chunk.js",
+    "static/js/2.77dfec93.chunk.js.map": "/Web_app_hackathon_2021/static/js/2.77dfec93.chunk.js.map",
+    "static/js/3.4be20f7e.chunk.js": "/Web_app_hackathon_2021/static/js/3.4be20f7e.chunk.js",
+    "static/js/3.4be20f7e.chunk.js.map": "/Web_app_hackathon_2021/static/js/3.4be20f7e.chunk.js.map",
     "index.html": "/Web_app_hackathon_2021/index.html",
-    "static/css/main.a89770f9.chunk.css.map": "/Web_app_hackathon_2021/static/css/main.a89770f9.chunk.css.map",
-    "static/js/2.677cda56.chunk.js.LICENSE.txt": "/Web_app_hackathon_2021/static/js/2.677cda56.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/Web_app_hackathon_2021/static/media/background.e09075e3.jpg"
+    "static/css/main.b5116ad2.chunk.css.map": "/Web_app_hackathon_2021/static/css/main.b5116ad2.chunk.css.map",
+    "static/js/2.77dfec93.chunk.js.LICENSE.txt": "/Web_app_hackathon_2021/static/js/2.77dfec93.chunk.js.LICENSE.txt",
+    "static/media/atb.ab53f807.svg": "/Web_app_hackathon_2021/static/media/atb.ab53f807.svg",
+    "static/media/index.css": "/Web_app_hackathon_2021/static/media/background.e09075e3.jpg",
+    "static/media/default-image.320f4408.jpg": "/Web_app_hackathon_2021/static/media/default-image.320f4408.jpg",
+    "static/media/eko.e6231172.png": "/Web_app_hackathon_2021/static/media/eko.e6231172.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.5726f9d1.js",
-    "static/js/2.677cda56.chunk.js",
-    "static/css/main.a89770f9.chunk.css",
-    "static/js/main.77201d19.chunk.js"
+    "static/js/runtime-main.49cf5923.js",
+    "static/js/2.77dfec93.chunk.js",
+    "static/css/main.b5116ad2.chunk.css",
+    "static/js/main.618a872a.chunk.js"
   ]
 }
