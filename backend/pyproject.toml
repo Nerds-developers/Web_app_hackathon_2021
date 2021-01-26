@@ -21,6 +21,7 @@ mysqlclient = "^2.0.3"
 mysql-connector = "^2.2.9"
 redis = "^3.5.3"
 celery = "^5.0.5"
+tzlocal = "^2.1"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.9.3"
