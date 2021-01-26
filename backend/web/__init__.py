@@ -1,10 +1,6 @@
-from flask import Flask
+import os
+from celery import Celery
 
-from backend.web.route import index
-
-
-def create_app():
-    """Application factory for Flask"""
-    app = Flask(__name__)
-    app.register_blueprint(index)
-    return app
+celery = Celery(__name__,
+                CELERY_BROKER_URL=os.getenv("CELERY_BROKER_URL"),
+                CELERY_RESULT_BACKEND=os.getenv("CELERY_RESULT_BACKEND"))

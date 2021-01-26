@@ -12,6 +12,16 @@ beautifulsoup4 = "^4.9.3"
 lxml = "^4.6.2"
 pydantic = "^1.7.3"
 uWSGI = "^2.0.19"
+tokenize_uk = "^0.2.0"
+uk-stemmer = {git = "https://github.com/Desklop/Uk_Stemmer"}
+Flask-RESTful = "^0.3.8"
+Flask-SQLAlchemy = "^2.4.4"
+Flask-Migrate = "^2.6.0"
+mysqlclient = "^2.0.3"
+mysql-connector = "^2.2.9"
+redis = "^3.5.3"
+celery = "^5.0.5"
+tzlocal = "^2.1"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.9.3"

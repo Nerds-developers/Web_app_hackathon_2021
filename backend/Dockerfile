@@ -38,8 +38,13 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     # deps for installing poetry
     curl \
+    git \
     # deps for building python deps
-    build-essential
+    build-essential \
+    python3-dev \
+    # libs for mysql
+    default-libmysqlclient-dev \
+    libmariadb3
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
@@ -60,3 +65,14 @@ RUN mkdir backend
 COPY ./core ./backend/core
 COPY ./web ./backend/web
 COPY ./providers ./backend/providers
+COPY ./nlp ./backend/nlp
+COPY ./processing ./backend/processing
+
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
+COPY celery_start.sh /celery_start.sh
+RUN chmod +x /celery_start.sh
+
+# running server
+# CMD ["uwsgi", "--ini", "backend/web/uwsgi.ini"]
