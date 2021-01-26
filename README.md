@@ -15,3 +15,9 @@ To see the whole dependencies list please open backend/pyproject.toml file.
 
 Please, read backend/README.md file for running project 
 in a proper way.
+
+
+For frontend application we used:
+- TypeScript
+- React
+- JS libraries (check package.json for details).
