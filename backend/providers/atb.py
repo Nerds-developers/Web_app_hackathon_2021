@@ -31,8 +31,9 @@ def get_product_item(link):
     producer = get_producer(product_page)
     cost = get_cost(product_page)
     final_title = clean_title(title, producer)
+    image_link = get_image_link(product_page)
     item = ProductItem(title=final_title, price=calc_price_for_one_kg(title, cost),
-                       producer=producer, prod_link=link, image_link="http")
+                       producer=producer, prod_link=link, image_link=image_link)
     return item
 
 
@@ -52,3 +53,8 @@ def get_cost(page):
     after_point = re.findall(r"\b(\d+)\b", price_tags[1].text)[0]
     price = float("{}.{}".format(before_point, after_point))
     return price
+
+
+def get_image_link(page):
+    image_link = page.find("div", class_="product-slick").find("img", class_="img-fluid")["src"]
+    return image_link

@@ -29,8 +29,9 @@ def get_prod_item(link):
     cost = get_cost(prod_page)
     producer = get_producer(prod_page)
     final_title = clean_title(title, producer)
+    image_link = get_image_link(prod_page)
     item = ProductItem(title=final_title, price=calc_price_for_one_kg(final_title, cost),
-                       producer=producer, prod_link=link, image_link="http")
+                       producer=producer, prod_link=link, image_link=image_link)
     return item
 
 
@@ -50,3 +51,9 @@ def get_producer(page):
     producer_tag = page.find("a", class_="BigProductCardTrademarkName")
     producer = producer_tag.text.lower() if producer_tag is not None else "self-developed"
     return producer
+
+
+def get_image_link(page):
+    image_link = page.find("div", class_="ZoomableImageSwitcher").\
+        find("img")["src"]
+    return image_link

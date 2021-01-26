@@ -31,8 +31,9 @@ def parse_product_items(prod_link):
     title = get_title(product_page_parsed)
     producer = get_producer(product_page_parsed)
     final_title = clean_title(title, producer)
+    image_link = get_image_link(product_page_parsed)
     items = [ProductItem(title=final_title, price=calc_price_for_one_kg(title, cost),
-                         producer=producer, prod_link=prod_link, image_link="http")
+                         producer=producer, prod_link=prod_link, image_link=image_link)
              for cost, volume in zip(costs, volumes)]
     return items
 
@@ -66,3 +67,8 @@ def get_producer(product_page_parsed):
     producer = product_page_parsed.find("div", class_="productDetail_tabs").find("table", class_="table").find("a").\
         text.lower()
     return producer
+
+
+def get_image_link(page):
+    image_link = page.find("div", class_="prodGallery_item").find("img")["src"]
+    return image_link
