@@ -1,21 +1,14 @@
 import React from 'react'
-import { withStyles, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import { Slider as MaterialSlider } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		margin: {
-			height: theme.spacing(3),
-		},
-	})
-)
 
 const AirbnbSlider = withStyles({
 	root: {
 		color: '#3a8589',
 		height: 3,
 		padding: '13px 0',
+		width: '80%',
+		margin: 'auto',
 	},
 	thumb: {
 		'height': 27,
@@ -61,17 +54,27 @@ function AirbnbThumbComponent(props: any) {
 interface SliderProps {
 	minValue: number
 	maxValue: number
+	selectedMinValue: number
+	selectedMaxValue: number
 	handleChange: (min: number, max: number) => void
 }
 
-export default function Slider({ minValue, maxValue, handleChange }: SliderProps) {
+export default function Slider({
+	minValue,
+	maxValue,
+	selectedMaxValue,
+	selectedMinValue,
+	handleChange,
+}: SliderProps) {
 	return (
 		<React.Fragment>
 			<AirbnbSlider
 				key={`slider-${minValue}-${maxValue}`}
 				ThumbComponent={AirbnbThumbComponent}
 				step={1}
-				defaultValue={[minValue, maxValue]}
+				max={maxValue}
+				min={minValue}
+				defaultValue={[selectedMinValue, selectedMaxValue]}
 				onChangeCommitted={(_, values: number | number[]) => {
 					const [min, max] = Array.isArray(values) ? values : [0, values]
 					handleChange(min, max)

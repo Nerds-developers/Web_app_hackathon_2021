@@ -11,20 +11,21 @@ import {
 	makeStyles,
 	TextField,
 } from '@material-ui/core'
-import { FilterConfigs, FilterParams } from '../../Data/api-types'
+import { FilterParams } from '../../Data/api-types'
 import { useFormik } from 'formik'
 import Slider from './Slider'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		root: {
-			display: 'flex',
-		},
 		formControl: {
 			margin: theme.spacing(3),
+			display: 'flex',
+			marginBottom: '30px',
+			overflow: 'hidden',
+			minWidth: '240px',
 		},
 		buttonsGroup: {
-			'marginTop': '35px',
+			'marginVertical': '35px',
 			'flexDirection': 'row',
 			'& button': {
 				margin: '10px',
@@ -38,23 +39,25 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export type FiltersProps = {
-	configs: FilterConfigs
+	filterParams?: FilterParams
 	onFilterSubmit: (filterParams: FilterParams) => void
 }
 
-const Filters = ({ configs: { producers }, onFilterSubmit }: FiltersProps) => {
+const Filters = ({ filterParams, onFilterSubmit }: FiltersProps) => {
 	const classes = useStyles()
-
 	const {
 		values,
 		handleChange,
 		handleSubmit,
 		handleReset,
-		setFieldValue,
+		setValues,
+		initialValues,
 	} = useFormik<FilterParams>({
-		initialValues: {
+		initialValues: filterParams || {
+			producers: [],
 			selectedProducers: [],
-			price: { min: 10, max: 80 },
+			minPrice: 0,
+			maxPrice: 0,
 		},
 		onSubmit: (values) => {
 			onFilterSubmit(values)
@@ -62,22 +65,32 @@ const Filters = ({ configs: { producers }, onFilterSubmit }: FiltersProps) => {
 	})
 
 	return (
-		<form onSubmit={handleSubmit} onReset={handleReset}>
+		<form
+			onSubmit={handleSubmit}
+			onReset={() => {
+				setValues({
+					producers: Array.from(initialValues.producers),
+					selectedProducers: Array.from(initialValues.producers),
+					minPrice: initialValues.minPrice,
+					maxPrice: initialValues.maxPrice,
+				})
+			}}
+		>
 			<FormControl component="fieldset" className={classes.formControl}>
 				<FormLabel component="legend">Виробники: </FormLabel>
 				<FormGroup>
-					{producers.map(({ label, id }) => (
+					{values.producers.map((producer) => (
 						<FormControlLabel
-							key={String(id)}
+							key={producer}
 							control={
 								<Checkbox
-									checked={values?.selectedProducers?.includes(String(id))}
+									checked={values?.selectedProducers?.includes(producer)}
 									onChange={handleChange}
 									name="selectedProducers"
-									value={id}
+									value={producer}
 								/>
 							}
-							label={label}
+							label={producer}
 						/>
 					))}
 				</FormGroup>
@@ -85,24 +98,35 @@ const Filters = ({ configs: { producers }, onFilterSubmit }: FiltersProps) => {
 				<FormGroup>
 					<FormLabel component="legend">Ціна: </FormLabel>
 					<Slider
-						minValue={values?.price.min}
-						maxValue={values?.price.max}
-						handleChange={(min, max) => setFieldValue('price', { min, max })}
+						minValue={initialValues?.minPrice}
+						maxValue={initialValues?.maxPrice}
+						selectedMinValue={values.selectedMinPrice || values?.minPrice}
+						selectedMaxValue={values.selectedMaxPrice || values?.maxPrice}
+						handleChange={(minPrice, maxPrice) => {
+							setValues({
+								minPrice: initialValues.minPrice,
+								maxPrice: initialValues.maxPrice,
+								selectedMaxPrice: maxPrice,
+								selectedMinPrice: minPrice,
+								producers: Array.from(initialValues?.producers),
+								selectedProducers: Array.from(values?.selectedProducers),
+							})
+						}}
 					/>
 					<TextField
 						id="standard-basic"
 						label="Мін:"
 						type="number"
-						name="price.min"
-						value={values?.price.min}
+						name="selectedMinPrice"
+						value={values.selectedMinPrice || values?.minPrice}
 						onChange={handleChange}
 					/>
 					<TextField
 						id="standard-basic"
 						label="Макс:"
 						type="number"
-						name="price.max"
-						value={values.price.max}
+						name="selectedMaxPrice"
+						value={values.selectedMaxPrice || values.maxPrice}
 						onChange={handleChange}
 					/>
 				</FormGroup>

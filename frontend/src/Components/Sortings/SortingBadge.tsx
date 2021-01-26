@@ -8,17 +8,16 @@ export type SortingBadgeProps = {
 	order?: 'asc' | 'desc'
 	title: string
 	handleClick: () => void
-	handleReset: () => void
+	handleReset?: () => void
 }
 
-const SortingBadge = ({ isActive, order, title, handleClick, handleReset }: SortingBadgeProps) => {
+const SortingBadge = ({ isActive, order, title, handleClick }: SortingBadgeProps) => {
 	return (
 		<Box>
 			<Chip
 				icon={<SortingIcon isActive={isActive} order={order} />}
 				label={title}
 				onClick={handleClick}
-				onDelete={handleReset}
 				color={isActive ? 'secondary' : undefined}
 				clickable
 				deleteIcon={isActive ? <HighlightOffIcon /> : <></>}
