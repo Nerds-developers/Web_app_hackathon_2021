@@ -1,11 +1,15 @@
 import re
 
 from backend.providers.helpers import fetch, extract_price, clean_title, calc_price_for_one_kg
-from backend.core.local_typing import ProductItem
+from backend.web.models import ProductItem
+from backend.core.local_logging import get_logger, timing
+
+logger = get_logger(__name__)
 
 query_uri = "https://shop.metro.ua/ua/search/?q=гречка"
 
 
+@timing(logger)
 def parse():
     search_result = fetch(query_uri)
     product_links = get_product_links(search_result)
@@ -27,8 +31,8 @@ def parse_product_items(prod_link):
     title = get_title(product_page_parsed)
     producer = get_producer(product_page_parsed)
     final_title = clean_title(title, producer)
-    items = [ProductItem(title=final_title, cost=cost, price=calc_price_for_one_kg(title, cost),
-                         link=prod_link, packages_number=volume, producer=producer)
+    items = [ProductItem(title=final_title, price=calc_price_for_one_kg(title, cost),
+                         producer=producer, prod_link=prod_link, image_link="http")
              for cost, volume in zip(costs, volumes)]
     return items
 
