@@ -10,7 +10,7 @@ parsers = [metro_parse, atb_parse, eko_parse]
 def process():
     parsed_items = [prod_item for parser in parsers
                     for prod_item in parser()]
-    return postprocessing(parsed_items)
+    return parsed_items
 
 
 def postprocessing(prod_items):
