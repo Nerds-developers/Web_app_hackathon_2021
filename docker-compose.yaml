@@ -8,11 +8,6 @@ services:
     volumes:
       - redis-data:/var/lib/redis
     command: redis-server --appendonly yes --port 6379
-    healthcheck:
-      test: redis-cli PING
-      interval: 1s
-      timeout: 1s
-      retries: 5
   # mysql database for saving product items
   db:
     image: mysql:8.0.22
@@ -23,22 +18,12 @@ services:
     env_file:
       - ./mysql.env
     command: --default-authentication-plugin=mysql_native_password
-    healthcheck:
-      test: mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1 FROM DUAL;"
-      interval: 3s
-      timeout: 3s
-      retries: 30
   # web application
   backend:
     build:
       context: ./backend
     env_file:
       - ./app.env
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     links:
       - db
       - redis
@@ -51,11 +36,6 @@ services:
       context: ./backend
     env_file:
       - ./app.env
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     links:
       - db
       - redis
