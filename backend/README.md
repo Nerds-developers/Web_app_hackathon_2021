@@ -19,6 +19,18 @@ install pre-commit-hook:
 pre-commit install
 ```
 
+Also you should run redis, mysql, celery worker and celery beat scheduler.
+You have to set such enviromental variables:
+```shell
+MYSQL_DATABASE
+MYSQL_USER
+MYSQL_PASSWORD
+MYSQL_ROOT_PASSWORD
+DB_URI
+CELERY_BROKER_URL
+CELERY_RESULT_BACKEND
+```
+
 ## Install for production
 
 install [docker](https://docs.docker.com/engine/install/)
