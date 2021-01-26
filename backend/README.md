@@ -46,4 +46,6 @@ MYSQL_ROOT_PASSWORD=mysql_root_password
 Create also spp.env for storing env variables for application.
 ```shell
 DB_URI=mysql+mysqlconnector://mysql_user:mysql_password@host:port/mysql_database
+CELERY_BROKER_URL=redis://redis:6379
+CELERY_RESULT_BACKEND=redis://redis:6379
 ```
