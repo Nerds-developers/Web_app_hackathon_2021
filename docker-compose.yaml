@@ -59,7 +59,7 @@ services:
     links:
       - db
       - redis
-    entrypoint: /wait-for-it.sh db:3306 -- /wait-for-it.sh redis:6379 -- celery -A backend.core.tasks worker -c4
+    entrypoint: /wait-for-it.sh db:3306 -- /wait-for-it.sh redis:6379 -- /celery_start.sh
 
 volumes:
   mysql-data:

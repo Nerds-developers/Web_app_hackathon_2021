@@ -71,5 +71,8 @@ COPY ./processing ./backend/processing
 COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
+COPY celery_start.sh /celery_start.sh
+RUN chmod +x /celery_start.sh
+
 # running server
-CMD ["uwsgi", "--ini", "backend/web/uwsgi.ini"]
+# CMD ["uwsgi", "--ini", "backend/web/uwsgi.ini"]
