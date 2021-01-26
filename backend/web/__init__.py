@@ -12,10 +12,12 @@ def create_app():
     app = Flask(__name__)
     app.config.from_mapping(
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SQLALCHEMY_DATABASE_URI=os.getenv("DB_URI")
+        SQLALCHEMY_DATABASE_URI=os.getenv("DB_URI"),
+        CELERY_BROKER_URL=os.getenv("CELERY_BROKER_URL"),
+        CELERY_RESULT_BACKEND=os.getenv("CELERY_RESULT_BACKEND")
     )
-    api = Api(app)
-    api.add_resource(GrechkaApi, "/api/grechka")
+    api_instance = Api(app)
+    api_instance.add_resource(GrechkaApi, "/api/grechka")
     db.init_app(app)
     Migrate(app, db)
 

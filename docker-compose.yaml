@@ -1,6 +1,19 @@
 version: "3.8"
 
 services:
+  # redis is used as a broker and backend for celery
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - redis-data:/var/lib/redis
+    command: redis-server --appendonly yes --port 6379
+    healthcheck:
+      test: redis-cli PING
+      interval: 1s
+      timeout: 1s
+      retries: 5
+  # mysql database for saving product items
   db:
     image: mysql:8.0.22
     restart: always
@@ -15,6 +28,7 @@ services:
       interval: 3s
       timeout: 3s
       retries: 30
+  # web application
   backend:
     build:
       context: ./backend
@@ -23,11 +37,30 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     links:
       - db
+      - redis
     ports:
     - 8000:8000
-    entrypoint: /wait-for-it.sh db:3306 -- uwsgi --ini backend/web/uwsgi.ini
+    entrypoint: /wait-for-it.sh db:3306 -- /wait-for-it.sh redis:6379 -- uwsgi --ini backend/web/uwsgi.ini
+  # celery worker
+  celery_worker:
+    build:
+      context: ./backend
+    env_file:
+      - ./app.env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    links:
+      - db
+      - redis
+    entrypoint: /wait-for-it.sh db:3306 -- /wait-for-it.sh redis:6379 -- celery -A backend.core.tasks worker -c4
 
 volumes:
   mysql-data:
+  redis-data:
