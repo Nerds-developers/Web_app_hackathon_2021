@@ -20,8 +20,6 @@ def parse_all():
 celery.conf.beat_schedule = {
     "fetch-products-to-db": {
         "task": "backend.core.tasks.parse_all",
-        "schedule": crontab(minute="*/1")
+        "schedule": crontab(minute="*/5")
     }
 }
-
-celery.conf.timezone = "UTC"
