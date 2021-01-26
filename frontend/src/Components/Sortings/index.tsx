@@ -1,4 +1,4 @@
-import { Box, Chip, Typography } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import React from 'react'
 import SortingBadge from './SortingBadge'
 import { makeStyles } from '@material-ui/core/styles'
@@ -35,11 +35,11 @@ const Sortings = ({ sortingParams, onChange }: SortingProps) => {
 			<Typography>Сортування: </Typography>
 			<SortingBadge
 				order={sortingParams.order}
-				isActive={sortingParams.column === 'price'}
+				isActive={sortingParams.column === 'prices'}
 				title={'За ціною'}
 				handleClick={handleClick.bind(
 					null,
-					'price',
+					'prices',
 					sortingParams.order === 'asc' ? 'desc' : 'asc'
 				)}
 			/>

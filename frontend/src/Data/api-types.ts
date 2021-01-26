@@ -18,9 +18,9 @@ export interface IShopProductItem {
 export interface IProduct {
 	title: string
 	producer: string
-	image: string
-	link: string
-	price: number
+	image_link: string
+	links: string[]
+	prices: number[]
 }
 
 export type SortingParams = {
@@ -30,14 +30,17 @@ export type SortingParams = {
 
 export type FilterParams = {
 	producers: string[]
+	selectedProducers: string[]
+	selectedMinPrice?: number
+	selectedMaxPrice?: number
 	minPrice: number
 	maxPrice: number
 }
 
 export type QueryParams = {
-	sorting: SortingParams
-	filters: FilterParams | null
-	page: number
+	sorting?: SortingParams
+	filters?: FilterParams
+	page?: number
 }
 
 export type ApiData = {

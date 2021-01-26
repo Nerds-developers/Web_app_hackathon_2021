@@ -1,46 +1,51 @@
-import { fakeProducts } from './Mocks'
-import { ApiData, FilterParams, IProduct, QueryParams, SortingParams } from './api-types'
-import { sortBy } from 'lodash'
+import { FilterParams, IProduct, QueryParams } from './api-types'
+import { buildFilterParams } from './DataUtils/buildFilterParams'
+import { paginateProducts } from './DataUtils/paginateProducts'
+import { sortProducts } from './DataUtils/sortProducts'
+import { filterProducts } from './DataUtils/filterProducts'
+import axios from 'axios'
+import data from './Mocks/data.json'
+import { transformApiData } from './DataUtils/transformApiData'
 
 export default class ApiClient {
-	fetchProducts(queryParams: QueryParams): Promise<ApiData> {
-		console.log(JSON.stringify(queryParams))
-		return new Promise<ApiData>((resolve) => {
-			setTimeout(() => {
-				const { products, ...rest } = fakeProducts
-				const filteredProducts = queryParams.filters
-					? this.filterResponseData(products, queryParams.filters)
-					: products
-				const selectedProducts: IProduct[] = this.paginateArray(
-					this.sortResponse(filteredProducts, queryParams.sorting),
-					queryParams.page
-				)
+	constructor(protected readonly url: string) {}
 
-				resolve({ ...rest, products: selectedProducts })
-			}, 10)
-		})
+	async fetchProducts(
+		queryParams: QueryParams,
+		isProduction: boolean
+	): Promise<[IProduct[], FilterParams]> {
+		try {
+			let products = transformApiData(await this.fetchData(isProduction))
+
+			const filterParams = buildFilterParams(products)
+			filterParams.selectedMaxPrice = queryParams.filters?.selectedMaxPrice
+			filterParams.selectedMinPrice = queryParams.filters?.selectedMinPrice
+
+			if (queryParams.filters) {
+				products = filterProducts(products, queryParams.filters)
+			}
+
+			if (queryParams.sorting) {
+				products = sortProducts(products, queryParams.sorting)
+			}
+
+			const { producers: selectedProducers } = buildFilterParams(products)
+
+			if (queryParams.page) {
+				products = paginateProducts(products, queryParams.page)
+			}
+
+			return [products, { ...filterParams, selectedProducers }]
+		} catch (e) {
+			console.error(e)
+
+			return [[], { selectedProducers: [], producers: [], maxPrice: 0, minPrice: 0 }]
+		}
 	}
 
-	filterResponseData(
-		products: IProduct[],
-		{ producers: selectedProducers, maxPrice, minPrice }: FilterParams
-	) {
-		return products.filter(({ price, producer }) => {
-			return selectedProducers.includes(producer) && price >= minPrice && price <= maxPrice
-		})
+	private async fetchData(isProduction: boolean): Promise<IProduct[]> {
+		return isProduction
+			? (await axios.get<IProduct[]>(`${this.url}/api/grechka`)).data
+			: ((data as any) as IProduct[])
 	}
-
-	sortResponse(products: IProduct[], { column, order }: SortingParams) {
-		return order === 'asc' ? sortBy(products, column) : sortBy(products, column).reverse()
-	}
-
-	paginateArray(products: IProduct[], page: number, perPage: number = 10) {
-		return products.slice((page - 1) * perPage, page * perPage)
-	}
-
-	// fetchFilterConfigs(): Promise<FilterConfigs> {
-	// 	return new Promise<FilterConfigs>((resolve) => {
-	// 		setTimeout(() => resolve(filterConfigs), 100)
-	// 	})
-	// }
 }

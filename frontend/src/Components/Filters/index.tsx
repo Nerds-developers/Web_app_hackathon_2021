@@ -17,14 +17,15 @@ import Slider from './Slider'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		root: {
-			display: 'flex',
-		},
 		formControl: {
 			margin: theme.spacing(3),
+			display: 'flex',
+			marginBottom: '30px',
+			overflow: 'hidden',
+			minWidth: '240px',
 		},
 		buttonsGroup: {
-			'marginTop': '35px',
+			'marginVertical': '35px',
 			'flexDirection': 'row',
 			'& button': {
 				margin: '10px',
@@ -38,33 +39,54 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export type FiltersProps = {
-	configs: FilterParams
+	filterParams?: FilterParams
 	onFilterSubmit: (filterParams: FilterParams) => void
 }
 
-const Filters = ({ configs, onFilterSubmit }: FiltersProps) => {
-	const { producers, minPrice, maxPrice } = configs
+const Filters = ({ filterParams, onFilterSubmit }: FiltersProps) => {
 	const classes = useStyles()
-	const { values, handleChange, handleSubmit, handleReset, setValues } = useFormik<FilterParams>({
-		initialValues: { producers: Array.from(producers), minPrice, maxPrice },
+	const {
+		values,
+		handleChange,
+		handleSubmit,
+		handleReset,
+		setValues,
+		initialValues,
+	} = useFormik<FilterParams>({
+		initialValues: filterParams || {
+			producers: [],
+			selectedProducers: [],
+			minPrice: 0,
+			maxPrice: 0,
+		},
 		onSubmit: (values) => {
 			onFilterSubmit(values)
 		},
 	})
 
 	return (
-		<form onSubmit={handleSubmit} onReset={handleReset}>
+		<form
+			onSubmit={handleSubmit}
+			onReset={() => {
+				setValues({
+					producers: Array.from(initialValues.producers),
+					selectedProducers: Array.from(initialValues.producers),
+					minPrice: initialValues.minPrice,
+					maxPrice: initialValues.maxPrice,
+				})
+			}}
+		>
 			<FormControl component="fieldset" className={classes.formControl}>
 				<FormLabel component="legend">Виробники: </FormLabel>
 				<FormGroup>
-					{producers.map((producer) => (
+					{values.producers.map((producer) => (
 						<FormControlLabel
 							key={producer}
 							control={
 								<Checkbox
-									checked={values?.producers?.includes(producer)}
+									checked={values?.selectedProducers?.includes(producer)}
 									onChange={handleChange}
-									name="producers"
+									name="selectedProducers"
 									value={producer}
 								/>
 							}
@@ -76,26 +98,35 @@ const Filters = ({ configs, onFilterSubmit }: FiltersProps) => {
 				<FormGroup>
 					<FormLabel component="legend">Ціна: </FormLabel>
 					<Slider
-						minValue={values?.minPrice}
-						maxValue={values?.maxPrice}
-						handleChange={(minPrice, maxPrice) =>
-							setValues({ minPrice, maxPrice, producers: Array.from(values?.producers) })
-						}
+						minValue={initialValues?.minPrice}
+						maxValue={initialValues?.maxPrice}
+						selectedMinValue={values.selectedMinPrice || values?.minPrice}
+						selectedMaxValue={values.selectedMaxPrice || values?.maxPrice}
+						handleChange={(minPrice, maxPrice) => {
+							setValues({
+								minPrice: initialValues.minPrice,
+								maxPrice: initialValues.maxPrice,
+								selectedMaxPrice: maxPrice,
+								selectedMinPrice: minPrice,
+								producers: Array.from(initialValues?.producers),
+								selectedProducers: Array.from(values?.selectedProducers),
+							})
+						}}
 					/>
 					<TextField
 						id="standard-basic"
 						label="Мін:"
 						type="number"
-						name="minPrice"
-						value={values?.minPrice}
+						name="selectedMinPrice"
+						value={values.selectedMinPrice || values?.minPrice}
 						onChange={handleChange}
 					/>
 					<TextField
 						id="standard-basic"
 						label="Макс:"
 						type="number"
-						name="maxPrice"
-						value={values.maxPrice}
+						name="selectedMaxPrice"
+						value={values.selectedMaxPrice || values.maxPrice}
 						onChange={handleChange}
 					/>
 				</FormGroup>

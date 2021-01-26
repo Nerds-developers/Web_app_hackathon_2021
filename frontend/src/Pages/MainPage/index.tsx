@@ -6,14 +6,15 @@ import EqualizerIcon from '@material-ui/icons/Equalizer'
 import {
 	AppBar,
 	Box,
-	Button,
 	CssBaseline,
 	Drawer,
+	FormControlLabel,
 	IconButton,
+	Switch,
 	Theme,
 	Typography,
 } from '@material-ui/core'
-import { ApiData, FilterParams, SortingParams } from '../../Data/api-types'
+import { ApiData, FilterParams, IProduct, SortingParams } from '../../Data/api-types'
 import Filters from '../../Components/Filters'
 import Sortings from '../../Components/Sortings'
 import LoadingIndicator from '../../Components/LoadingIndicator'
@@ -23,76 +24,71 @@ import CloseIcon from '@material-ui/icons/Close'
 import { Container } from '@material-ui/core'
 import Pagination from '../../Components/Pagination'
 import useDeepCompareEffect from 'use-deep-compare-effect'
+import ProductModal from '../../Components/ProductModal'
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		root: {
+		'root': {
 			display: 'flex',
 			flexWrap: 'wrap',
 			justifyContent: 'space-around',
-			overflow: 'hidden',
 			backgroundColor: theme.palette.background.paper,
 			flexGrow: 1,
 			padding: 0,
-			height: '100vh',
 		},
-		tab: {
+		'tab': {
 			color: 'white',
 			paddingTop: 50,
 		},
-		body: {
-			height: '100vh',
+		'body': {
 			display: 'flex',
 			alignItems: 'flex-start',
-			overflowY: 'auto',
 			padding: '10px',
 			width: '100%',
+			paddingBottom: '20px',
+			minHeight: '100vh',
 		},
-		drawer: {
+		'drawer': {
 			flexShrink: 1,
 			width: '330px',
 			marginRight: '10px',
 		},
-		appBar: {
+		'appBar': {
 			zIndex: theme.zIndex.drawer + 1,
 			position: 'relative',
 		},
-		menuButton: {
+		'menuButton': {
 			marginRight: theme.spacing(2),
 		},
-		toolbar: theme.mixins.toolbar,
-		drawerPaper: {
+		'toolbar': theme.mixins.toolbar,
+		'drawerPaper': {
 			position: 'relative',
 			[theme.breakpoints.down('sm')]: {
 				position: 'fixed',
 			},
 		},
-		content: {
+		'content': {
 			width: '100%',
 		},
-		closeMenuButton: {
+		'closeMenuButton': {
 			marginRight: 'auto',
 			marginLeft: 0,
 		},
-		appBarContent: {
+		'appBarContent': {
 			display: 'flex',
 			justifyContent: 'space-between',
 			paddingRight: '10px',
 		},
+		'.MuiMenu-paper': {
+			transactionDuration: '0s !important',
+		},
 	})
 )
 
-type ApiResponseInitialState = { isLoaded: boolean; apiData: ApiData }
-
-const apiInitialState: ApiResponseInitialState = {
+const apiInitialState: { isLoaded: boolean; products: IProduct[] } = {
 	isLoaded: false,
-	apiData: { products: [], producers: [], minPrice: 0, maxPrice: 0 },
+	products: [],
 }
-const buildDefaultStateForFilter = ({ minPrice, maxPrice, producers }: ApiData): FilterParams => ({
-	producers,
-	maxPrice,
-	minPrice,
-})
 
 export type MainPageProps = {
 	apiClient: ApiClient
@@ -101,12 +97,14 @@ export type MainPageProps = {
 const MainPage = ({ apiClient }: MainPageProps) => {
 	const classes = useStyles()
 
-	const [{ isLoaded, apiData }, setApiResponse] = useState<ApiResponseInitialState>(apiInitialState)
-	const [filterParams, setFilterParams] = useState<FilterParams | null>(null)
+	const [{ isLoaded, products }, setApiResponse] = useState<typeof apiInitialState>(apiInitialState)
+	const [filterParams, setFilterParams] = useState<FilterParams>()
 
 	const [isFilterOpen, setFilterState] = useState(false)
-	const [sortingParams, setSortParams] = useState<SortingParams>({ column: 'price', order: 'asc' })
+	const [sortingParams, setSortParams] = useState<SortingParams>({ column: 'prices', order: 'asc' })
 	const [page, setPage] = useState<number>(1)
+	const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null)
+	const [isProductionMode, setMode] = useState(false)
 
 	const handleSortingChange = (params: SortingParams) => setSortParams(params)
 	const handleDrawerToggle = () => setFilterState(!isFilterOpen)
@@ -115,9 +113,10 @@ const MainPage = ({ apiClient }: MainPageProps) => {
 	useDeepCompareEffect(() => {
 		isLoaded && setApiResponse(apiInitialState)
 		apiClient
-			.fetchProducts({ sorting: sortingParams, filters: filterParams, page })
-			.then((data: ApiData) => {
-				setApiResponse({ isLoaded: true, apiData: data })
+			.fetchProducts({ sorting: sortingParams, filters: filterParams, page }, isProductionMode)
+			.then(([products, filterParams]) => {
+				setApiResponse({ isLoaded: true, products })
+				setFilterParams(filterParams)
 			})
 			.catch((e) => console.error(e))
 	}, [sortingParams, filterParams, page])
@@ -141,13 +140,23 @@ const MainPage = ({ apiClient }: MainPageProps) => {
 							Hackaton 2021
 						</Typography>
 					</Toolbar>
-					<Button
-						startIcon={<EqualizerIcon />}
-						onClick={() => console.log('statistic')}
-						color="inherit"
-					>
-						Статистика
-					</Button>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={!isProductionMode}
+								onChange={() => setMode(!isProductionMode)}
+								name="mode"
+							/>
+						}
+						label="АPI/Test"
+					/>
+					{/*<Button*/}
+					{/*	startIcon={<EqualizerIcon />}*/}
+					{/*	onClick={() => console.log('statistic')}*/}
+					{/*	color="inherit"*/}
+					{/*>*/}
+					{/*	Статистика*/}
+					{/*</Button>*/}
 				</Box>
 			</AppBar>
 			<Box className={classes.body}>
@@ -167,7 +176,7 @@ const MainPage = ({ apiClient }: MainPageProps) => {
 								</IconButton>
 								{
 									<Filters
-										configs={buildDefaultStateForFilter(apiData)}
+										filterParams={filterParams}
 										onFilterSubmit={(filterParams) => setFilterParams(filterParams)}
 									/>
 								}
@@ -176,11 +185,14 @@ const MainPage = ({ apiClient }: MainPageProps) => {
 						<Box onClick={() => isFilterOpen && setFilterState(false)} className={classes.content}>
 							<>
 								<Sortings onChange={handleSortingChange} sortingParams={sortingParams} />
-								<ProductList data={apiData.products} />
+								<ProductList
+									data={products}
+									itemOnClick={(product: IProduct) => setSelectedProduct(product)}
+								/>
 								<Pagination
 									page={page}
 									onPageChange={handlePageChange}
-									itemsCount={apiData.products.length}
+									itemsCount={products.length}
 								/>
 							</>
 						</Box>
@@ -189,6 +201,8 @@ const MainPage = ({ apiClient }: MainPageProps) => {
 					<LoadingIndicator />
 				)}
 			</Box>
+
+			<ProductModal product={selectedProduct} handleClose={() => setSelectedProduct(null)} />
 		</Container>
 	)
 }

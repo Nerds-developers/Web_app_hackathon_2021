@@ -1,6 +1,15 @@
 import React from 'react'
 import MaterialPagination from '@material-ui/lab/Pagination'
-const defaultItemOnPageCount = 10
+import { Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { PRODUCT_PER_PAGE } from '../../constants'
+
+const useStyles = makeStyles({
+	container: {
+		display: 'flex',
+		justifyContent: 'center',
+	},
+})
 
 export type PaginationProps = {
 	itemsCount: number
@@ -8,13 +17,17 @@ export type PaginationProps = {
 	onPageChange: (page: number) => void
 }
 const Pagination = ({ page, itemsCount, onPageChange }: PaginationProps) => {
+	const classes = useStyles()
+
 	return (
-		<MaterialPagination
-			page={page}
-			count={(itemsCount - 1) / defaultItemOnPageCount + 1}
-			color="primary"
-			onChange={(_: any, page: number) => onPageChange(page)}
-		/>
+		<Box className={classes.container}>
+			<MaterialPagination
+				page={page}
+				count={Math.round((itemsCount - 1) / PRODUCT_PER_PAGE + 1)}
+				color="primary"
+				onChange={(_: any, page: number) => onPageChange(page)}
+			/>
+		</Box>
 	)
 }
 

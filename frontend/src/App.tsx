@@ -1,10 +1,9 @@
 import React from 'react'
 import MainPage from './Pages/MainPage'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import { Theme } from '@material-ui/core'
 import ApiClient from './Data/apiClient'
+import { SERVER_URL } from './constants'
 
-const apiClient = new ApiClient()
+const apiClient = new ApiClient(SERVER_URL)
 
 function App() {
 	return (
