@@ -23,5 +23,3 @@ celery.conf.beat_schedule = {
         "schedule": crontab(minute="*/5")
     }
 }
-
-celery.conf.timezone = "UTC"

@@ -1,9 +1,15 @@
 from backend.nlp.nlp import get_lemmas
+from backend.core.local_logging import get_logger
+from datetime import datetime, timedelta
+
+logger = get_logger(__name__)
 
 
 def postprocessing(prod_items):
     items_for_interfaces = {}
     for item in prod_items:
+        dif = datetime.now() - timedelta(minutes=7)
+        logger.info("Cur time is {} prod_item time is {} and asserting is {}".format(dif, item.adding_time, item.adding_time > dif ))
         lemma = frozenset(get_lemmas(item.title) + [item.producer])
         if lemma in items_for_interfaces.keys():
             items_for_interfaces[lemma] += [item]

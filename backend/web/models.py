@@ -11,7 +11,7 @@ class ProductItem(db.Model):
     product_link = db.Column(db.String(200))
     image_link = db.Column(db.String(200))
     producer = db.Column(db.String(50))
-    adding_time = db.Column(db.DateTime)
+    adding_time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, title, price, producer,  prod_link, image_link):
         self.title = title
@@ -19,4 +19,3 @@ class ProductItem(db.Model):
         self.product_link = prod_link
         self.image_link = image_link
         self.producer = producer
-        self.adding_time = datetime.now()
