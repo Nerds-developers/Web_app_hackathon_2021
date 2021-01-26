@@ -27,6 +27,13 @@ const useStyles = makeStyles((theme: Theme) =>
 			height: 'auto',
 			maxWith: 450,
 			maxHeight: 650,
+			[theme.breakpoints.between(400, 600)]: {
+				maxWith: '250px',
+				maxHeight: '450px',
+			},
+			[theme.breakpoints.down(400)]: {
+				maxHeight: '300px',
+			},
 		},
 		priceContainer: {
 			display: 'flex',
